@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 const fs = require('fs');
 const http = require('http');
 
@@ -14,7 +14,6 @@ const Runner = async () => {
 
 async function downloadMovieMetadata(movieUrlsPath) {
     const urlStream = fs.createReadStream(movieUrlsPath);
-    // const writeStream = fs.createWriteStream('movies_meta_data.json');
     const { browser, page } = await setupSession(HOME_URL);
     let count = 0;
     fs.appendFile('movies_meta_data.json', '[\n', (err) => {
@@ -36,6 +35,7 @@ async function downloadMovieMetadata(movieUrlsPath) {
             }
         }
     } catch (e) {
+        console.log(e);
         await browser.close();
     }
     fs.appendFile('movies_meta_data.json', ']\n', (err) => {
@@ -108,10 +108,7 @@ async function getAllThumbsInPage(page) {
 
 
 async function setupSession(url) {
-    const browser = await puppeteer.launch({
-        executablePath: "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
-        headless: true
-    });
+    const browser = await puppeteer.launch();
     const page = (await browser.pages())[0];
     await page.setViewport({ width: 1280, height: 800 })
     await page.goto(url);
