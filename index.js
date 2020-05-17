@@ -32,7 +32,9 @@ async function downloadMovieMetadata(movieUrlsPath) {
                         console.log('Failed writing ', link);
                     }
                 })
+                await waitForSecs(Math.ceil(5 + Math.random(1) * 10));
             }
+            await waitForSecs(Math.ceil(30 + Math.random(1) * 10));
         }
     } catch (e) {
         console.log(e);
